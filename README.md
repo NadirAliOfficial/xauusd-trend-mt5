@@ -105,6 +105,24 @@ indicator inside the MT5 strategy tester.
 - It is **not** a direction predictor. Once a trend state is on, the next move is close to a
   coin flip in direction. Use it to decide **when to run or stop** your EA, not as an entry signal.
 
+### Proxy scalper, with vs without the filter
+
+The client's EA has no source, so it can't be backtested here. As a stand-in, the probe runs a
+naive M1 EMA scalper (0.1 lot, $0.25 TP / $0.40 SL) twice: once always on, once only while
+the indicator shows the matching strong state. Same period, same real ticks.
+
+| | always on | only in strong state |
+|---|---|---|
+| Trades | 4 069 | 3 417 |
+| Win rate | 33.62% | 24.70% |
+| Profit factor | 0.32 | 0.23 |
+| Max equity drawdown | 96.20% | 95.90% |
+
+Both blow the account. A $0.25 target against this demo's ~$0.20 spread has no edge, and the
+filter does not change that. **The indicator is not a fix for an entry that loses on its own.**
+Its value is as a manual run / stop switch for an EA that already makes money in trends and
+gives it back in chop. Check it against your own EA's trade history before relying on it.
+
 Spread on this demo server was a median 2.0 pip, so a 0.9 pip filter would block most bars
 there. On a raw/ECN account, spread is much tighter — set the limit to your broker.
 
